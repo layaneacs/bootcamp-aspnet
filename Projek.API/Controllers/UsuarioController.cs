@@ -1,10 +1,19 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace projek.api.Controllers
 {
     [ApiController]
-    public class UsuarioController
+    [Route("api/usuario")]
+    public class UsuarioController : ControllerBase
     {
-        
+        public UsuarioController()
+        {
+            
+        }
+        [HttpGet]
+        public IActionResult Get(){
+            return Ok("ok");
+        }
     }
 }
