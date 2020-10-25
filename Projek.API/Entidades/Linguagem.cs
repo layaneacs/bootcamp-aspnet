@@ -1,20 +1,20 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace projek.api.Entidades
 {
     public class Linguagem
     {
-        protected Linguagem() 
+        protected Linguagem()
         {
             
         }
         public Linguagem(string nome)
         {
-            this.Nome = nome;           
-
+            Nome = nome;
         }
-        public string Id { get; private set; }
-        public string Nome { get; private set; } 
+        public int LinguagemId { get; set; }
+        public string Nome { get; set; } 
         
     }
 }

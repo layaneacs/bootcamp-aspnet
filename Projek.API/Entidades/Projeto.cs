@@ -1,29 +1,28 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using projek.api.Enums;
 
 namespace projek.api.Entidades
 {
     public class Projeto
-    {
+    {             
+
         protected Projeto()
         {
             
         }
         public Projeto(string nome)
         {
-            this.Nome = nome;
-            this.CriadoEm = DateTime.Now;
-            Usuarios = new List<Usuario>();
-            Linguagens = new List<Linguagem>();
-            Status = StatusProjetoEnum.Ativo;
+            Nome = nome;
+            CriadoEm = DateTime.Now;                   
+            Linguagens = new List<Linguagem>();  
+            Status = StatusProjetoEnum.Ativo;                 
         }
-        public string Id { get; private set; }
-        public string Nome { get; private set; }        
-        public DateTime CriadoEm { get; private set; }
-        public List<Usuario> Usuarios { get; private set; }
-        public List<Linguagem> Linguagens { get; private set; }
-
-        public StatusProjetoEnum Status  { get; private set; }
+        public int ProjetoId { get;  set; }
+        public string Nome { get;  set; }        
+        public DateTime CriadoEm { get;  set; }
+        public List<Linguagem> Linguagens { get; set; }
+        public StatusProjetoEnum Status  { get;  set; }
     }
 }

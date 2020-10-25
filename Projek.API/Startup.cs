@@ -32,9 +32,15 @@ namespace Projek.API
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Projek API" , Version = "v1"})
             );
 
+            // var connection = Configuration.GetConnectionString("ProjekTest"); 
+            // services.AddDbContext<ProjekDbContext>(options =>
+            //     options.UseSqlServer(connection)
+            // );
+
             services.AddDbContext<ProjekDbContext>(options =>
                 options.UseInMemoryDatabase("Db_database")
             );
+
             services.AddControllers();
         }
 

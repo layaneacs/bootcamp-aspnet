@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using projek.api.Entidades;
+using projek.api.Persistence;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace projek.api.Controllers
 {
@@ -9,27 +11,39 @@ namespace projek.api.Controllers
     [Route("api/usuarios")]
     public class UsuarioController : ControllerBase
     {        
-        public UsuarioController()
+        private readonly ProjekDbContext _context;
+        public UsuarioController(ProjekDbContext context)
         {
-            
+            _context = context;            
         }
         [HttpGet]
         public IActionResult Get(){
-            return Ok(new List<Usuario>{
-                new Usuario("Layane", "150" ),
-                new Usuario("Layane2", "150" ),
-                new Usuario("Layane3", "150" )
-            });
+            var usuarios = _context.Usuarios.ToList();
+            return Ok(usuarios);
         }
           
         [HttpGet("{id}")]
-        public IActionResult GetById(string id){            
-            return Ok("ok");
+        public IActionResult GetById(int id){   
+            var usuario = _context.Usuarios.SingleOrDefault(x => x.UsuarioId == id);
+            if(usuario == null) {
+                return NotFound();
+            }         
+            return Ok(usuario);            
         }
 
         [HttpPost]
-        public IActionResult Create(){
-            return Ok();
+        public IActionResult Create(Usuario usuario){
+            try
+            {
+                _context.Usuarios.Add(usuario);
+                _context.SaveChanges();
+                
+                return Ok(usuario);
+            }
+            catch (System.Exception err)
+            {                
+                return BadRequest("Não foi possível criar o usuário: Error: " + err);
+            } 
         }
 
         [HttpDelete("{id}")]
