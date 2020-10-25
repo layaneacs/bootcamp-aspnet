@@ -14,8 +14,24 @@ namespace projek.api.Persistence
         public DbSet<Projeto> Projetos { get; set; }
         public DbSet<Linguagem> Linguagens { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder builder){
-           
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Usuario>()
+                    .HasKey(a => a.Id);
+
+            builder.Entity<Usuario>()
+                    .HasMany(a => a.Projetos)
+                    .WithMany(a => a.Usuarios); 
+
+            builder.Entity<Projeto>()                
+                    .HasKey(a => a.Id);
+
+            builder.Entity<Projeto>()
+                   .HasMany(a => a.Usuarios)
+                   .WithMany(a => a.Projetos);                   
+
+            builder.Entity<Linguagem>()                
+                    .HasKey(a => a.Id);
         }
     }
 }
