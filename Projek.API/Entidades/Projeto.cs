@@ -6,23 +6,23 @@ using projek.api.Enums;
 namespace projek.api.Entidades
 {
     public class Projeto
-    {             
-
-        protected Projeto()
-        {
-            
-        }
-        public Projeto(string nome)
-        {
-            Nome = nome;
-            CriadoEm = DateTime.Now;                   
-            Linguagens = new List<Linguagem>();  
-            Status = StatusProjetoEnum.Ativo;                 
-        }
+    {    
+        [Key]
         public int ProjetoId { get;  set; }
-        public string Nome { get;  set; }        
+
+        //--OK
+        public int UsuarioId { get; set; }
+        public Usuario Usuario { get; set; }
+
+        public string Nome { get;  set; }    
+
+        public string Descricao { get; set; }
+
         public DateTime CriadoEm { get;  set; }
+        
+        
         public List<Linguagem> Linguagens { get; set; }
+
         public StatusProjetoEnum Status  { get;  set; }
     }
 }

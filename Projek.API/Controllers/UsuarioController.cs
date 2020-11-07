@@ -4,6 +4,7 @@ using projek.api.Persistence;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using projek.api.Interfaces;
 
 namespace projek.api.Controllers
 {
@@ -11,20 +12,23 @@ namespace projek.api.Controllers
     [Route("api/usuarios")]
     public class UsuarioController : ControllerBase
     {        
-        private readonly ProjekDbContext _context;
-        public UsuarioController(ProjekDbContext context)
+        private readonly IUsuario _usuario;
+        public UsuarioController(IUsuario context)
         {
-            _context = context;            
+            _usuario = context;            
         }
+        
         [HttpGet]
         public IActionResult Get(){
-            var usuarios = _context.Usuarios.ToList();
+            var usuarios = _usuario.GetAll();
             return Ok(usuarios);
         }
           
         [HttpGet("{id}")]
         public IActionResult GetById(int id){   
-            var usuario = _context.Usuarios.SingleOrDefault(x => x.UsuarioId == id);
+            //var usuario = _usuario.Usuarios.SingleOrDefault(x => x.UsuarioId == id);
+            var usuario = _usuario.GetId(id);
+
             if(usuario == null) {
                 return NotFound();
             }         
@@ -35,9 +39,7 @@ namespace projek.api.Controllers
         public IActionResult Create(Usuario usuario){
             try
             {
-                _context.Usuarios.Add(usuario);
-                _context.SaveChanges();
-                
+                _usuario.Create(usuario);
                 return Ok(usuario);
             }
             catch (System.Exception err)
