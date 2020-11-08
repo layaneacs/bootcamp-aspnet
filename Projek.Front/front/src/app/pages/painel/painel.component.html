@@ -1,0 +1,43 @@
+<div class="painel">
+    <mat-toolbar>  
+        <button mat-icon-button>
+            <mat-icon>exit_to_app</mat-icon>
+        </button>        
+    </mat-toolbar>
+    
+    <div class="main">
+        <div class="menu">
+            menu
+        </div>
+        <div class="boxs">
+            <div class="box-infos">
+                Olá, {{ usuario.nome | titlecase  }} <br>
+                Membro desde: {{ usuario.criadoEm | date }} <br>
+                Quantidade de projetos: {{ cont }}       
+                
+            </div>
+            <div class="box-sub">
+                <div class="box-projetos">
+                    <p>Projetos</p>                
+                    <a href="#" class="box-cont">5</a>
+                </div>
+                <div class="box-andamento">
+                    <p>Em Andamento</p>                
+                    <a href="#" class="box-cont">3</a>
+                </div>
+                <div class="box-concluido">
+                    <p>Finalizados</p>                
+                    <a href="#" class="box-cont">2</a>
+                </div>  
+            </div>            
+            <div class="box-menus">
+                <p>menus</p>                
+                <button (click)= 'openDialog()' >Novo</button>
+            </div>            
+        </div>
+    </div>
+    <footer>        
+        @ 2020 LS Projek - layane.andreia@hotmail.com              
+    </footer>
+  
+</div>

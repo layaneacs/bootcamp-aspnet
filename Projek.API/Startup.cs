@@ -50,6 +50,13 @@ namespace Projek.API
             services.AddControllers().AddNewtonsoftJson( 
                 options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
+
+            services.AddCors(options => options.AddPolicy("CorsPolicy" , 
+                builder => builder
+                    .WithOrigins("http://localhost:4200") 
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials() ));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,6 +75,8 @@ namespace Projek.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseCors("CorsPolicy");
+
 
             app.UseAuthorization();
 
