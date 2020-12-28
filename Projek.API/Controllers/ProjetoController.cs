@@ -1,6 +1,9 @@
+using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using projek.api.Entidades;
+using projek.api.Interfaces;
 using projek.api.Persistence;
 
 namespace projek.api.Controllers
@@ -9,21 +12,35 @@ namespace projek.api.Controllers
     [Route("api/projetos")]
     public class ProjetoController: ControllerBase
     {
-        private readonly ProjekDbContext _context;
-        public ProjetoController(ProjekDbContext context)
+        //private readonly ProjekDbContext _context;
+        private readonly IProjeto _context;
+        public ProjetoController(IProjeto context)
         {
             _context = context;
         }
 
         [HttpGet]
+        [Route("")]
+        [Authorize]
         public IActionResult Get(){
-            var projetos = _context.Projetos.ToList();
-            return Ok(projetos);
+            try
+            {
+                var user = User.Identity.Name ?? "";
+                var projetos = _context.GetAll();
+               
+                return Ok(projetos);
+            }
+            catch (System.Exception)
+            {
+               return StatusCode(500,"Não foi posssível listar os projetos");            
+            }
+           
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id){
-            var projeto = _context.Projetos.SingleOrDefault(x => x.ProjetoId == id);
+            //var projeto = _context.Projetos.SingleOrDefault(x => x.ProjetoId == id);
+            string projeto = null;
             if(projeto == null){
                 return NotFound();
             }
@@ -31,14 +48,23 @@ namespace projek.api.Controllers
             
         }
 
+
+        //--Criar projeto
         [HttpPost]
-        public IActionResult Create(Projeto projeto){
-             try
-            {
-                _context.Projetos.Add(projeto);
-                _context.SaveChanges();
+        [Route("")]
+        [Authorize]
+        public IActionResult Create(Projeto model){
+            
+            if(!ModelState.IsValid) BadRequest(ModelState);
+            try
+            {              
+                model.Username = User.Identity.Name;    
+                       
+                _context.Create(model);
+
                 
-                return Ok(projeto);
+                
+                return Ok(model);
             }
             catch (System.Exception)
             {                

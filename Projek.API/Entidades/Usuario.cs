@@ -8,8 +8,17 @@ namespace projek.api.Entidades
     {   
         [Key]                
         public int UsuarioId { get;  set; }
+
+       
         public string Nome { get; set; }
+        
         public string CPF { get; set; }
+
+        [Required]
+        public string Username { get ; set; }
+        [Required]
+        public string Password {get ;set; }
+
         public DateTime CriadoEm { get; set; }
         public List<Projeto> Projetos { get; set; }       
         public List<Linguagem> Linguagens { get; set; }

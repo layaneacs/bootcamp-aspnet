@@ -5,6 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using projek.api.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Projek.API.Services;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace projek.api.Controllers
 {
@@ -12,19 +16,22 @@ namespace projek.api.Controllers
     [Route("api/usuarios")]
     public class UsuarioController : ControllerBase
     {        
-        private readonly IUsuario _usuario;
+        private readonly IUsuario _usuario;        
+
         public UsuarioController(IUsuario context)
         {
             _usuario = context;            
         }
         
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Get(){
             var usuarios = _usuario.GetAll();
             return Ok(usuarios);
         }
           
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public IActionResult GetById(int id){   
             //var usuario = _usuario.Usuarios.SingleOrDefault(x => x.UsuarioId == id);
             var usuario = _usuario.GetId(id);
@@ -34,8 +41,9 @@ namespace projek.api.Controllers
             }         
             return Ok(usuario);            
         }
-
+        
         [HttpPost]
+        [AllowAnonymous]
         public IActionResult Create(Usuario usuario){
             try
             {
@@ -46,7 +54,36 @@ namespace projek.api.Controllers
             {                
                 return BadRequest("Não foi possível criar o usuário: Error: " + err);
             } 
+        }        
+        
+        //-- Rota para autentificacao
+        [HttpPost]
+        [Route("login")]
+        [AllowAnonymous]
+        public IActionResult Authenticate(Usuario model){
+            try
+            {
+                var usuario = _usuario.Authenticate(model);  
+                if(usuario == null){
+                    return StatusCode(404, "Usuário ou senha inválidos");
+                }
+
+                var token = TokenService.GerarToken(model);
+                model.Password = ""; 
+                
+                return Ok ( new 
+                {                    
+                    user = model, 
+                    token = token 
+                });
+                
+            }
+            catch (System.Exception err)
+            {                
+                return StatusCode(500, "Falha na autenticação");
+            } 
         }
+
 
         [HttpDelete("{id}")]
         public IActionResult Delete(string id){

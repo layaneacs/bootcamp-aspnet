@@ -14,6 +14,8 @@ namespace projek.api.Entidades
         public int UsuarioId { get; set; }
         public Usuario Usuario { get; set; }
 
+        public string Username { get; set; }
+
         public string Nome { get;  set; }    
 
         public string Descricao { get; set; }

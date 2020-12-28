@@ -11,5 +11,7 @@ namespace projek.api.Interfaces
         Usuario Create(Usuario usuario);
         void Delete(Usuario usuario);
         void Update(Usuario usuario);
+
+        Usuario Authenticate(Usuario usuario);
     }
 }

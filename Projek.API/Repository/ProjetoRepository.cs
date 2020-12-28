@@ -1,7 +1,12 @@
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+
 using projek.api.Entidades;
 using projek.api.Interfaces;
 using projek.api.Persistence;
+using System.Linq;
 
 namespace projek.api.Repository
 {
@@ -13,9 +18,15 @@ namespace projek.api.Repository
             _context = context;
         }
 
-        public Projeto Create(Projeto usuario)
+
+        //--Criar projeto
+        public Projeto Create(Projeto projeto)
         {
-            throw new System.NotImplementedException();
+            _context.Projetos.Add(projeto);
+            _context.SaveChanges();
+
+            return projeto;
+
         }
 
         public void Delete(Projeto usuario)
@@ -23,9 +34,10 @@ namespace projek.api.Repository
             throw new System.NotImplementedException();
         }
 
+        //--Get all
         public List<Projeto> GetAll()
         {
-            throw new System.NotImplementedException();
+           return _context.Projetos.ToList();
         }
 
         public Projeto GetId(int id)

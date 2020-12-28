@@ -10,7 +10,7 @@ namespace projek.api.Persistence
             
         }
 
-        public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }       
         public DbSet<Projeto> Projetos { get; set; }
         public DbSet<Linguagem> Linguagens { get; set; } 
            

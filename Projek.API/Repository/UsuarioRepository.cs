@@ -15,6 +15,16 @@ namespace projek.api.Repository
         {
             _context = context;
         }
+
+        public Usuario Authenticate(Usuario usuario)
+        {
+            var user = _context.Usuarios.FirstOrDefault(
+                 x => x.Username == usuario.Username && x.Password == usuario.Password);
+                
+            return user;              
+
+        }
+
         //--Criar
         public Usuario Create(Usuario usuario)
         {
